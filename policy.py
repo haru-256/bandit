@@ -43,7 +43,7 @@ class BasePolicy(PolicyInterface):
 
     def __init__(self, n_arms: int) -> None:
         """Initialize class."""
-        _check_stochastic_input(n_arms, 1)
+        _check_stochastic_input(n_arms)
 
         self.n_arms = n_arms
         self.counts = np.zeros(self.n_arms, dtype=int)
@@ -72,8 +72,6 @@ class UCB(BasePolicy):
     ----------
     n_arms: int
         The number of given bandit arms.
-    batch_size: int, optional (default=1)
-        The number of data given in each batch.
     """
 
     def __init__(self, n_arms: int) -> None:
@@ -172,11 +170,7 @@ class UCB1(BasePolicy):
     ----------
     n_arms: int
         The number of given bandit arms.
-    batch_size: int, optional (default=1)
-        The number of data given in each batch.
     """
-
-    name = "UCB1"
 
     def __init__(self, n_arms: int) -> None:
         """Initialize class."""
