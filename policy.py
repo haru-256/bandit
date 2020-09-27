@@ -207,7 +207,6 @@ class UCB1(BasePolicy):
         return np.sqrt(2 * np.log(self.t) / self.counts)
 
 
-'''
 class UCBTuned(BasePolicy):
     """Upper Confidence Bound Tuned.
     Parameters
@@ -285,4 +284,3 @@ class UCBTuned(BasePolicy):
         return np.where(n <= 1, 0,
                         (self.squared_cumulative_rewards - 2 * n * mu * self.cumulative_rewards + n * (mu ** 2)) / (
                                 n - 1))
-'''
