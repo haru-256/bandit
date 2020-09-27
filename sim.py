@@ -4,8 +4,6 @@ from typing import Optional, Union
 
 import numpy as np
 
-from utils import _check_x_input, sigmoid
-
 
 class BaseBandit:
     """Base class for all bandits.
@@ -71,6 +69,8 @@ class BernoulliBandit(BaseBandit):
     def __init__(self, n_arms: int, n_features: Optional[int] = None, scale: float = 0.1,
                  noise: float = 0.1, contextual: bool = False, mu: Optional[np.ndarray] = None) -> None:
         """Initialize Class."""
+        if contextual:
+            raise NotImplementedError("contextual bandit has not implemented yet")
         super().__init__(n_arms=n_arms, n_features=n_features, scale=scale, noise=noise, contextual=contextual, mu=mu)
 
     def pull(self, chosen_arm: int, x: Optional[np.ndarray] = None) -> Union[int, float]:
@@ -82,15 +82,8 @@ class BernoulliBandit(BaseBandit):
         """
         if chosen_arm not in range(self.n_arms):
             raise ValueError(f"chosen_arm is not in range({self.n_arms})")
-        if self.contextual:
-            x, e = _check_x_input(x), np.random.normal(loc=0, scale=self.noise)
-            mu = np.ravel(x.T @ self.params)
-            reward, regret, self.best_arm = \
-                np.random.binomial(n=1, p=sigmoid(mu[chosen_arm] + e)), \
-                np.max(mu) - mu[chosen_arm], np.argmax(mu)
-        else:
-            reward, regret = \
-                np.random.binomial(n=1, p=self.mu[chosen_arm]), self.mu_max - self.mu[chosen_arm]
+        reward, regret = \
+            np.random.binomial(n=1, p=self.mu[chosen_arm]), self.mu_max - self.mu[chosen_arm]
 
         self.rewards += reward
         self.regrets += regret

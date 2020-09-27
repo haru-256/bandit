@@ -4,8 +4,7 @@ from typing import Union
 
 import numpy as np
 
-from utils import (_check_stochastic_input,
-                   _check_update_input)
+from ._check_input import _check_stochastic_input, _check_update_input
 
 
 class PolicyInterface(ABC):
@@ -113,7 +112,7 @@ class UCB(BasePolicy):
 class UCBOffline(BasePolicy):
     def __init__(self, n_arms: int) -> None:
         """Initialize class."""
-        _check_stochastic_input(n_arms, 1)
+        _check_stochastic_input(n_arms)
         super().__init__(n_arms)
         self.correction_factor_counts = np.zeros(self.n_arms, dtype=int)  # correction_factorのためのcounts
 
